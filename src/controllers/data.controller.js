@@ -29,3 +29,4 @@ export const paginations = async (req, res) => {
 
   res.send(products);
 };
+
