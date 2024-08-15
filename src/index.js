@@ -1,4 +1,4 @@
-import connectDB from "./db/dbConnection.js";
+import { connectDB } from "./db/dbConnection.js";
 import { app } from "./app.js";
 
 const port = process.env.PORT || 5000; // Port number is set to 3000 by default

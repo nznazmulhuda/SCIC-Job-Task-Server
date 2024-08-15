@@ -12,7 +12,10 @@ app.use(
   })
 );
 
-// routes
+// import routes
+import userRoute from "./routes/user.routes.js";
 
+// routes
+app.use("/api/v1/data", userRoute);
 
 export { app };
