@@ -74,7 +74,7 @@ export const allProducts = async (req, res) => {
       await categoryAndPriceRange(category, minPrice, maxPrice, page)
     );
   } else if (!query && !category && sortBy && minPrice && maxPrice) {
-    // category and price range filter
+    // sort and price range filter
     return res.send(await sortAndPriceRange(sortBy, minPrice, maxPrice, page));
   } else if (query && category && sortBy && !minPrice && !maxPrice) {
     // query and category and sort filter
@@ -91,7 +91,7 @@ export const allProducts = async (req, res) => {
       )
     );
   } else if (query && !category && sortBy && minPrice && maxPrice) {
-    // query and category and price range filter
+    // query and sort and price range filter
     return res.send(
       await querySortAndPriceRange(query, sortBy, minPrice, maxPrice, page)
     );
