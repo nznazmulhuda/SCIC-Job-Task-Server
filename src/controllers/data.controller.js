@@ -11,6 +11,7 @@ export const singleProduct = async (req, res) => {
   const product = await dataCollection.findOne({
     _id: new ObjectId(req.query.id),
   });
+
   res.send(product);
 };
 
@@ -30,3 +31,10 @@ export const paginations = async (req, res) => {
   res.send(products);
 };
 
+export const priceRange = async (req, res) => {
+  const datas = await dataCollection.find({}).toArray();
+  const minPrice = Math.min(...datas.map((data) => data.price));
+  const maxPrice = Math.max(...datas.map((data) => data.price));
+
+  res.send({ minPrice, maxPrice });
+};

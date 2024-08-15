@@ -13,7 +13,7 @@ app.use(
 );
 
 // import routes
-import dataRoute from "./routes/user.routes.js";
+import dataRoute from "./routes/data.routes.js";
 import categoryRoute from "./routes/category.routes.js";
 
 // routes
