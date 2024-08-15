@@ -45,13 +45,13 @@ export const onlySort = async (sort) => {
   return result;
 };
 
-export const onlyPriceRange = async ({ minPrice, maxPrice }) => {
+export const onlyPriceRange = async (minPrice, maxPrice) => {
   const agg = [
     {
       $match: {
         price: {
-          $gte: 50,
-          $lte: 100,
+          $gte: minPrice * 1,
+          $lte: maxPrice * 1,
         },
       },
     },
@@ -59,4 +59,28 @@ export const onlyPriceRange = async ({ minPrice, maxPrice }) => {
 
   const result = await dataCollection.aggregate(agg).toArray();
   return result;
+};
+
+export const queryAndCategory = async (query, category) => {
+  console.log(query, category);
+  const agg = [
+    {
+      $search: {
+        index: "SCIC_search",
+        text: {
+          query: `${query}`,
+          path: "productName",
+          fuzzy: {},
+        },
+      },
+    },
+    {
+      $match: {
+        category: `${category}`,
+      },
+    },
+  ];
+
+  const results = await dataCollection.aggregate(agg).toArray();
+  return results;
 };
