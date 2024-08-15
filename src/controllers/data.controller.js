@@ -38,3 +38,24 @@ export const priceRange = async (req, res) => {
 
   res.send({ minPrice, maxPrice });
 };
+
+export const sort = async (req, res) => {
+  /**
+   * lth --> Low To High
+   * htl --> High To Low
+   */
+  const { sortBy } = req.query; // get sort field from query
+  if (!sortBy) {
+    const data = await dataCollection.find({}).toArray();
+    return res.send(data);
+  } else if (sortBy === "lth") {
+    const products = await dataCollection.find({}).sort({ price: 1 }).toArray();
+    return res.send(products);
+  } else {
+    const products = await dataCollection
+      .find({})
+      .sort({ price: -1 })
+      .toArray();
+    return res.send(products);
+  }
+};
