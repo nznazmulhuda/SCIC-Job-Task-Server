@@ -1,13 +1,12 @@
 import { dataCollection } from "../constants.js";
 
 export const getAllCategory = async (req, res) => {
-  const results = await dataCollection.find({}).toArray();
-  let categories = [];
-
-  results.map(
-    (cate) =>
-      !categories.includes(cate.category) && categories.push(cate.category)
-  );
+  const agg = [
+    {
+      $group: { _id: "$category" },
+    },
+  ];
+  const categories = await dataCollection.aggregate(agg).toArray();
 
   res.send(categories);
 };

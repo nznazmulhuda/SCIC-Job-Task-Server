@@ -31,11 +31,23 @@ export const paginations = async (req, res) => {
 };
 
 export const priceRange = async (req, res) => {
-  const datas = await dataCollection.find({}).toArray();
-  const minPrice = Math.min(...datas.map((data) => data.price));
-  const maxPrice = Math.max(...datas.map((data) => data.price));
+  const agg = [
+    {
+      $group: {
+        _id: null,
+        maxPrice: {
+          $max: "$price",
+        },
+        minPrice: {
+          $min: "$price",
+        },
+      },
+    },
+  ];
 
-  res.send({ minPrice, maxPrice });
+  const result = await dataCollection.aggregate(agg).toArray();
+  const { maxPrice, minPrice } = result[0]; // get max and min price from result
+  res.send({ maxPrice, minPrice });
 };
 
 export const sort = async (req, res) => {
@@ -44,17 +56,14 @@ export const sort = async (req, res) => {
    * htl --> High To Low
    */
   const { sortBy } = req.query; // get sort field from query
-  if (!sortBy) {
-    const data = await dataCollection.find({}).toArray();
-    return res.send(data);
-  } else if (sortBy === "lth") {
-    const products = await dataCollection.find({}).sort({ price: 1 }).toArray();
-    return res.send(products);
-  } else {
-    const products = await dataCollection
-      .find({})
-      .sort({ price: -1 })
-      .toArray();
-    return res.send(products);
-  }
+  const agg = [
+    {
+      $sort: {
+        price: sortBy === "lth" ? 1 : sortBy === "htl" && -1,
+      },
+    },
+  ];
+
+  const products = await dataCollection.aggregate(agg).toArray();
+  res.send(products);
 };

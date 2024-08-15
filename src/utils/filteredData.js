@@ -1,5 +1,6 @@
 import { dataCollection, limit } from "../constants.js";
 
+// get data with no filtering
 export const noFilter = async (page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -13,6 +14,7 @@ export const noFilter = async (page) => {
   return allProducts;
 };
 
+// get data with filtering by category
 export const onlyCategory = async (category, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -32,6 +34,7 @@ export const onlyCategory = async (category, page) => {
   return result;
 };
 
+// get data with filtering by query
 export const onlyQuery = async (query, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -55,6 +58,7 @@ export const onlyQuery = async (query, page) => {
   return results;
 };
 
+// get data with sorting by price (low to high or high to low)
 export const onlySort = async (sort, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -74,6 +78,7 @@ export const onlySort = async (sort, page) => {
   return result;
 };
 
+// get data with filtering by price range
 export const onlyPriceRange = async (minPrice, maxPrice, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -96,6 +101,7 @@ export const onlyPriceRange = async (minPrice, maxPrice, page) => {
   return result;
 };
 
+// get data with filtering by query and category
 export const queryAndCategory = async (query, category, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -125,6 +131,7 @@ export const queryAndCategory = async (query, category, page) => {
   return results;
 };
 
+// get data with filtering by query and sort
 export const queryAndSort = async (query, sort, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -154,6 +161,7 @@ export const queryAndSort = async (query, sort, page) => {
   return results;
 };
 
+// get data with filtering by query, and price range
 export const queryAndPriceRange = async (query, minPrice, maxPrice, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -186,6 +194,7 @@ export const queryAndPriceRange = async (query, minPrice, maxPrice, page) => {
   return results;
 };
 
+// get data with filtering by category and sort
 export const categoryAndSort = async (category, sort, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -210,6 +219,7 @@ export const categoryAndSort = async (category, sort, page) => {
   return results;
 };
 
+// get data with filtering by category and price range
 export const categoryAndPriceRange = async (
   category,
   minPrice,
@@ -242,6 +252,7 @@ export const categoryAndPriceRange = async (
   return results;
 };
 
+// get data with filtering by sort and price range
 export const sortAndPriceRange = async (sort, minPrice, maxPrice, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -269,6 +280,7 @@ export const sortAndPriceRange = async (sort, minPrice, maxPrice, page) => {
   return results;
 };
 
+// get data with filtering by query, category, and sort
 export const queryCategoryAndSort = async (query, category, sort, page) => {
   let pageNum = Number(page);
   const startIndex = (pageNum - 1) * limit; // get start index
@@ -303,6 +315,7 @@ export const queryCategoryAndSort = async (query, category, sort, page) => {
   return results;
 };
 
+// get data with filtering by query, category, and price range
 export const queryCategoryAndPriceRange = async (
   query,
   category,
@@ -346,6 +359,7 @@ export const queryCategoryAndPriceRange = async (
   return results;
 };
 
+// get data with filtering by query, sort, and price range
 export const querySortAndPriceRange = async (
   query,
   sortBy,
@@ -389,6 +403,7 @@ export const querySortAndPriceRange = async (
   return results;
 };
 
+// get data with filtering by category, sort, and price range
 export const categorySortAndPriceRange = async (
   category,
   sort,
@@ -427,6 +442,7 @@ export const categorySortAndPriceRange = async (
   return results;
 };
 
+// get data with all filters applied
 export const applyAllTheFilter = async (
   query,
   category,
