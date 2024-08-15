@@ -13,7 +13,10 @@ export const noFilter = async (page) => {
   return allProducts;
 };
 
-export const onlyCategory = async (category) => {
+export const onlyCategory = async (category, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
+
   const agg = [
     {
       $match: {
@@ -21,13 +24,17 @@ export const onlyCategory = async (category) => {
       },
     },
   ];
-  const result = await dataCollection.aggregate(agg).toArray();
+  const result = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return result;
 };
 
-export const onlyQuery = async (query) => {
-  console.log({ query });
-
+export const onlyQuery = async (query, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $search: {
@@ -40,12 +47,17 @@ export const onlyQuery = async (query) => {
       },
     },
   ];
-  const cursor = dataCollection.aggregate(agg);
-  const results = await cursor.toArray();
+  const results = dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
-export const onlySort = async (sort) => {
+export const onlySort = async (sort, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $sort: {
@@ -54,11 +66,17 @@ export const onlySort = async (sort) => {
     },
   ];
 
-  const result = await dataCollection.aggregate(agg).toArray();
+  const result = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return result;
 };
 
-export const onlyPriceRange = async (minPrice, maxPrice) => {
+export const onlyPriceRange = async (minPrice, maxPrice, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $match: {
@@ -70,11 +88,17 @@ export const onlyPriceRange = async (minPrice, maxPrice) => {
     },
   ];
 
-  const result = await dataCollection.aggregate(agg).toArray();
+  const result = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return result;
 };
 
-export const queryAndCategory = async (query, category) => {
+export const queryAndCategory = async (query, category, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $search: {
@@ -93,11 +117,17 @@ export const queryAndCategory = async (query, category) => {
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
-export const queryAndSort = async (query, sort) => {
+export const queryAndSort = async (query, sort, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $search: {
@@ -116,11 +146,17 @@ export const queryAndSort = async (query, sort) => {
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
-export const queryAndPriceRange = async (query, minPrice, maxPrice) => {
+export const queryAndPriceRange = async (query, minPrice, maxPrice, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $search: {
@@ -142,11 +178,17 @@ export const queryAndPriceRange = async (query, minPrice, maxPrice) => {
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
-export const categoryAndSort = async (category, sort) => {
+export const categoryAndSort = async (category, sort, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $match: {
@@ -160,11 +202,22 @@ export const categoryAndSort = async (category, sort) => {
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
-export const categoryAndPriceRange = async (category, minPrice, maxPrice) => {
+export const categoryAndPriceRange = async (
+  category,
+  minPrice,
+  maxPrice,
+  page
+) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $match: {
@@ -181,11 +234,44 @@ export const categoryAndPriceRange = async (category, minPrice, maxPrice) => {
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
-export const queryCategoryAndSort = async (query, category, sort) => {
+export const sortAndPriceRange = async (sort, minPrice, maxPrice, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
+  const agg = [
+    {
+      $sort: {
+        price: sort === "lth" ? 1 : sort === "htl" && -1,
+      },
+    },
+    {
+      $match: {
+        price: {
+          $gte: minPrice * 1,
+          $lte: maxPrice * 1,
+        },
+      },
+    },
+  ];
+
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
+  return results;
+};
+
+export const queryCategoryAndSort = async (query, category, sort, page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $search: {
@@ -209,7 +295,11 @@ export const queryCategoryAndSort = async (query, category, sort) => {
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
@@ -217,8 +307,11 @@ export const queryCategoryAndPriceRange = async (
   query,
   category,
   minPrice,
-  maxPrice
+  maxPrice,
+  page
 ) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $search: {
@@ -245,7 +338,54 @@ export const queryCategoryAndPriceRange = async (
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
+  return results;
+};
+
+export const querySortAndPriceRange = async (
+  query,
+  sortBy,
+  minPrice,
+  maxPrice,
+  page
+) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
+  const agg = [
+    {
+      $search: {
+        index: "SCIC_search",
+        text: {
+          query: `${query}`,
+          path: "productName",
+          fuzzy: {},
+        },
+      },
+    },
+    {
+      $sort: {
+        price: sortBy === "lth" ? 1 : sortBy === "htl" && -1,
+      },
+    },
+    {
+      $match: {
+        price: {
+          $gte: minPrice * 1,
+          $lte: maxPrice * 1,
+        },
+      },
+    },
+  ];
+
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
@@ -253,8 +393,11 @@ export const categorySortAndPriceRange = async (
   category,
   sort,
   minPrice,
-  maxPrice
+  maxPrice,
+  page
 ) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $match: {
@@ -276,7 +419,11 @@ export const categorySortAndPriceRange = async (
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
 
@@ -285,8 +432,11 @@ export const applyAllTheFilter = async (
   category,
   sort,
   minPrice,
-  maxPrice
+  maxPrice,
+  page
 ) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
   const agg = [
     {
       $search: {
@@ -318,6 +468,10 @@ export const applyAllTheFilter = async (
     },
   ];
 
-  const results = await dataCollection.aggregate(agg).toArray();
+  const results = await dataCollection
+    .aggregate(agg)
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
   return results;
 };
