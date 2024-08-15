@@ -6,8 +6,7 @@ export const getAllCategory = async (req, res) => {
 
   results.map(
     (cate) =>
-      !categories.includes(cate.category.toLowerCase()) &&
-      categories.push(cate.category.toLowerCase())
+      !categories.includes(cate.category) && categories.push(cate.category)
   );
 
   res.send(categories);
