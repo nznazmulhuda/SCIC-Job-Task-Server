@@ -7,6 +7,7 @@ import {
   queryAndCategory,
   queryAndPriceRange,
   queryAndSort,
+  categoryAndSort,
 } from "../utils/filteredData.js";
 
 /**
@@ -18,8 +19,8 @@ import {
  * if only price range done
  * if query and category done
  * if query and sortBy done
- * if query and price range
- * if category and sortBy
+ * if query and price range done
+ * if category and sortBy done
  * if category and price range
  * if query and category and sortBy
  * if query and category and price range
@@ -55,5 +56,7 @@ export const allProducts = async (req, res) => {
     return res.send(await queryAndSort(query, sortBy));
   } else if (query && !category && !sortBy && minPrice && maxPrice) {
     return res.send(await queryAndPriceRange(query, minPrice, maxPrice));
+  } else if (!query && category && sortBy && !minPrice && !maxPrice) {
+    return res.send(await categoryAndSort(category, sortBy));
   }
 };
