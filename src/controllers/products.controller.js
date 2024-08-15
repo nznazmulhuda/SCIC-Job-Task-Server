@@ -1,12 +1,11 @@
 import { dataCollection, limit } from "../constants.js";
-import { onlyCategory } from "../utils/onlyCategory.js";
-import { onlyQuery } from "../utils/onlyQuery.js";
+import { onlyCategory, onlyQuery, onlySort } from "../utils/filteredData.js";
 
 /**
  * TODO: Conditions
  * if no query done
  * if only query done
- * if only category
+ * if only category done
  * if only sortBy
  * if only price range
  * if query and category
@@ -35,9 +34,10 @@ export const allProducts = async (req, res) => {
       .toArray();
     return res.send(allProducts);
   } else if (query && !category && !sortBy && !minPrice && !maxPrice) {
-    const filteredProducts = await onlyQuery(query);
-    return res.send(filteredProducts);
-  } else if (category && !query && !sortBy && !minPrice && !maxPrice) {
+    return res.send(await onlyQuery(query));
+  } else if (!query && category && !sortBy && !minPrice && !maxPrice) {
     return res.send(await onlyCategory(category));
+  } else if (!query && !category && sortBy && !minPrice && !maxPrice) {
+    return res.send(await onlySort(sortBy));
   }
 };
