@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { dataCollection } from "../constants.js";
+import { dataCollection, limit } from "../constants.js";
 
 export const getAllData = async (req, res) => {
   const products = await dataCollection.find({}).toArray();
@@ -16,10 +16,9 @@ export const singleProduct = async (req, res) => {
 };
 
 export const paginations = async (req, res) => {
-  let { page = 1, limit = 10 } = req.query; // get page number and limit from query
+  let { page = 1 } = req.query; // get page number and limit from query
 
   page = Number(page); // convert page number to number
-  limit = Number(limit); // convert limit number to number
 
   const startIndex = (page - 1) * limit; // get start index
   const products = await dataCollection

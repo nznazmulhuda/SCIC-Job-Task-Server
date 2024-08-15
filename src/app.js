@@ -15,9 +15,11 @@ app.use(
 // import routes
 import dataRoute from "./routes/data.routes.js";
 import categoryRoute from "./routes/category.routes.js";
+import productRoute from "./routes/products.routes.js";
 
 // routes
 app.use("/api/v1/data", dataRoute);
 app.use("/api/v1/category", categoryRoute);
+app.use("/api/v1/products", productRoute);
 
 export { app };
