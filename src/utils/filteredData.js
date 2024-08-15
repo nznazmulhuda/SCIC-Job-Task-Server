@@ -44,3 +44,19 @@ export const onlySort = async (sort) => {
   const result = await dataCollection.aggregate(agg).toArray();
   return result;
 };
+
+export const onlyPriceRange = async ({ minPrice, maxPrice }) => {
+  const agg = [
+    {
+      $match: {
+        price: {
+          $gte: 50,
+          $lte: 100,
+        },
+      },
+    },
+  ];
+
+  const result = await dataCollection.aggregate(agg).toArray();
+  return result;
+};
