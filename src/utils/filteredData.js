@@ -150,3 +150,24 @@ export const categoryAndSort = async (category, sort) => {
   const results = await dataCollection.aggregate(agg).toArray();
   return results;
 };
+
+export const categoryAndPriceRange = async (category, minPrice, maxPrice) => {
+  const agg = [
+    {
+      $match: {
+        category: `${category}`,
+      },
+    },
+    {
+      $match: {
+        price: {
+          $gte: minPrice * 1,
+          $lte: maxPrice * 1,
+        },
+      },
+    },
+  ];
+
+  const results = await dataCollection.aggregate(agg).toArray();
+  return results;
+};
