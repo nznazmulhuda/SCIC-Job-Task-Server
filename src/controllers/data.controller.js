@@ -1,9 +1,15 @@
-import { client } from "../db/dbConnection.js";
+import { ObjectId } from "mongodb";
+import { dataCollection } from "../constants.js";
 
 export const getAllData = async (req, res) => {
-  const data = client.db(process.env.DB_NAME).collection("products");
-
-  const products = await data.find({}).toArray();
+  const products = await dataCollection.find({}).toArray();
 
   res.send(products);
+};
+
+export const singleProduct = async (req, res) => {
+  const product = await dataCollection.findOne({
+    _id: new ObjectId(req.query.id),
+  });
+  res.send(product);
 };
