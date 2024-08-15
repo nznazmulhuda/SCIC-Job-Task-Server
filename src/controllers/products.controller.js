@@ -1,5 +1,5 @@
-import { dataCollection, limit } from "../constants.js";
 import {
+  noFilter,
   onlyCategory,
   onlyPriceRange,
   onlyQuery,
@@ -12,6 +12,7 @@ import {
   queryCategoryAndSort,
   queryCategoryAndPriceRange,
   categorySortAndPriceRange,
+  applyAllTheFilter,
 } from "../utils/filteredData.js";
 
 /**
@@ -28,8 +29,8 @@ import {
  * if category and price range done
  * if query and category and sortBy done
  * if query and category and price range done
- * if category and sortBy and price range
- * if query and category and price range and sortBy
+ * if category and sortBy and price range done
+ * if query and category and price range and sortBy done
  */
 
 export const allProducts = async (req, res) => {
@@ -37,15 +38,7 @@ export const allProducts = async (req, res) => {
 
   // conditions
   if (!query && !category && !sortBy && !minPrice && !maxPrice) {
-    let pageNum = Number(page);
-    const startIndex = (pageNum - 1) * limit; // get start index
-
-    const allProducts = await dataCollection
-      .find({})
-      .skip(startIndex)
-      .limit(limit)
-      .toArray();
-    return res.send(allProducts);
+    return res.send(await noFilter(page));
   } else if (query && !category && !sortBy && !minPrice && !maxPrice) {
     return res.send(await onlyQuery(query));
   } else if (!query && category && !sortBy && !minPrice && !maxPrice) {
@@ -73,6 +66,10 @@ export const allProducts = async (req, res) => {
   } else if (!query && category && sortBy && minPrice && maxPrice) {
     return res.send(
       await categorySortAndPriceRange(category, sortBy, minPrice, maxPrice)
+    );
+  } else if (query && category && sortBy && minPrice && maxPrice) {
+    return res.send(
+      await applyAllTheFilter(query, category, sortBy, minPrice, maxPrice)
     );
   }
 };

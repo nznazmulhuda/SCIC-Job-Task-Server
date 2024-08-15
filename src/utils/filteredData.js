@@ -1,4 +1,17 @@
-import { dataCollection } from "../constants.js";
+import { dataCollection, limit } from "../constants.js";
+
+export const noFilter = async (page) => {
+  let pageNum = Number(page);
+  const startIndex = (pageNum - 1) * limit; // get start index
+
+  const allProducts = await dataCollection
+    .find({})
+    .skip(startIndex)
+    .limit(limit)
+    .toArray();
+
+  return allProducts;
+};
 
 export const onlyCategory = async (category) => {
   const agg = [
@@ -243,6 +256,48 @@ export const categorySortAndPriceRange = async (
   maxPrice
 ) => {
   const agg = [
+    {
+      $match: {
+        category: `${category}`,
+      },
+    },
+    {
+      $sort: {
+        price: sort === "lth" ? 1 : sort === "htl" && -1,
+      },
+    },
+    {
+      $match: {
+        price: {
+          $gte: minPrice * 1,
+          $lte: maxPrice * 1,
+        },
+      },
+    },
+  ];
+
+  const results = await dataCollection.aggregate(agg).toArray();
+  return results;
+};
+
+export const applyAllTheFilter = async (
+  query,
+  category,
+  sort,
+  minPrice,
+  maxPrice
+) => {
+  const agg = [
+    {
+      $search: {
+        index: "SCIC_search",
+        text: {
+          query: `${query}`,
+          path: "productName",
+          fuzzy: {},
+        },
+      },
+    },
     {
       $match: {
         category: `${category}`,
