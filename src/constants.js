@@ -1,8 +1,9 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-export const uri = process.env.URI; // mongodb uri
+const dbName = process.env.DB_NAME;
 
-// create a new client
+const uri = process.env.URI; // mongodb uri
+
 export const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -11,8 +12,6 @@ export const client = new MongoClient(uri, {
   },
 });
 
-export const dataCollection = client
-  .db(process.env.DB_NAME)
-  .collection("products");
+export const dataCollection = client.db(dbName).collection("products");
 
 export const limit = 9; // default limit of products

@@ -1,4 +1,4 @@
-import { dataCollection } from "../constants.js";
+import { dataCollection } from "../../constants.js";
 
 export const getAllCategory = async (req, res) => {
   const agg = [

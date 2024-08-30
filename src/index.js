@@ -11,4 +11,4 @@ connectDB();
 
 // Start the Express server
 app.get("/", (req, res) => res.send("Server running at: " + port));
-app.listen(port);
+app.listen(port, () => console.log("Server listening on port " + port));
