@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { dataCollection, limit } from "../constants.js";
+import { dataCollection, limit } from "../../constants.js";
 
 export const getAllData = async (req, res) => {
   const products = await dataCollection.find({}).toArray();

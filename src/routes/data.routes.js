@@ -5,7 +5,7 @@ import {
   priceRange,
   singleProduct,
   sort,
-} from "../controllers/data.controller.js";
+} from "../controllers/products/data.controller.js";
 
 const router = Router();
 

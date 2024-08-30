@@ -15,7 +15,7 @@ import {
   querySortAndPriceRange,
   categorySortAndPriceRange,
   applyAllTheFilter,
-} from "../utils/filteredData.js";
+} from "../../utils/filteredData.js";
 
 /**
  * Conditions
